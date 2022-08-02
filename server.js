@@ -2,7 +2,11 @@ let express = require('express')
 let app = express()
 let bodyParser = require('body-parser')
 let session = require('express-session')
-let socket = require('socket.io')
+let server = require("http").createServer(app)
+let io = require('socket.io')(server)
+
+
+let connected = [];
 
 
 app.set('view engine', 'ejs')
@@ -32,8 +36,18 @@ app.post('/', (req, res) => {
     else {
         req.session.name = req.body.name
     }
+    connected.push(req.session.name)
+    io.emit('newUser', req.body.name)
     res.redirect("/home")
 })
 
+app.get('/home', (req, res) => {
+    res.render('pages/home', { connected: connected })
+})
 
-app.listen(3000)
+io.on("userDisconnection", (sock) => {
+    console.log(sock)
+})
+
+
+server.listen(3002)
