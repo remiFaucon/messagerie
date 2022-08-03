@@ -14,14 +14,24 @@ app.set('view engine', 'ejs')
 
 // middlewares
 app.use('/assets', express.static('public'))
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(session({
+const sessionMiddleware = session({
     secret: 'secret',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
-}))
+})
+app.use(sessionMiddleware)
+const wrap = middleware => (socket, next) => middleware(socket.request, {}, next)
+io.use(wrap(sessionMiddleware))
+io.use((socket, next) => {
+    const session = socket.request.session
+    if (session) {
+        next()
+    }
+})
 
 
 
@@ -43,6 +53,7 @@ app.post('/', (req, res) => {
 
 app.get('/home', (req, res) => {
     io.sockets.on('connect', (client) => {
+        console.log(client.request.session)
         if (connected[connected.length-1].socketId === null){
             connected[connected.length-1].socketId = client.client.conn.id
             io.emit("newUser", connected[connected.length-1])
