@@ -12,9 +12,12 @@ let connected = [];
 app.set('view engine', 'ejs')
 
 
-// middlewares
-app.use('/assets', express.static('public'))
 
+
+// middlewares
+const wrap = middleware => (socket, next) => middleware(socket.request, {}, next)
+
+app.use('/assets', express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 const sessionMiddleware = session({
@@ -24,7 +27,6 @@ const sessionMiddleware = session({
     cookie: { secure: false }
 })
 app.use(sessionMiddleware)
-const wrap = middleware => (socket, next) => middleware(socket.request, {}, next)
 io.use(wrap(sessionMiddleware))
 io.use((socket, next) => {
     const session = socket.request.session
