@@ -13,7 +13,6 @@ app.set('view engine', 'ejs')
 
 
 // middlewares
-
 app.use('/assets', express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -44,13 +43,18 @@ app.post('/', (req, res) => {
 
 app.get('/home', (req, res) => {
     io.sockets.on('connect', (client) => {
-        myId = client.client.conn.id;
         if (connected[connected.length-1].socketId === null){
             connected[connected.length-1].socketId = client.client.conn.id
             io.emit("newUser", connected[connected.length-1])
         }
+
         client.on('disconnect', () => {
             io.emit('userDisconnect', client.client.conn.id)
+            for (let i = 0; i < connected.length; i++) {
+                if (connected[i].socketId === client.client.conn.id){
+                    connected.splice(i, 1)
+                }
+            }
         })
     })
     res.render('pages/home', { connected: connected })
