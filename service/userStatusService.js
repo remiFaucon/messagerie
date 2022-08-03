@@ -7,7 +7,7 @@ let status = {
             io.emit("newUser", user)
         }
     },
-    room(io, client, connected) {
+    room: (io, client, connected) => {
         io.on('changeRoom', (user1, user2) => {
 
             // TODO modif this
@@ -23,7 +23,7 @@ let status = {
             client.join(room)
         })
     },
-    deconnection(io, client, connected) {
+    deconnection: (io, client, connected) => {
         client.on('disconnect', () => {
             io.emit('userDisconnect', client.client.conn.id)
             for (let i = 0; i < connected.length; i++) {
