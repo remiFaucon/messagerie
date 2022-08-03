@@ -1,8 +1,8 @@
 <div id="connected">
 <% connected.forEach(person => { %>
-        <div class="person">
-            <p><%= person %></p>
-        </div>
-    <% }) %>
+    <% if (person.socketId !== null) { %>
+        <p data-id="<%= person.socketId %>"><%= person.name %></p>
+    <% } %>
+<% }) %>
 </div>
 <script type="text/javascript" src="/assets/script/connectedPersonSocket.js"></script>

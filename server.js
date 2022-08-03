@@ -13,6 +13,7 @@ app.set('view engine', 'ejs')
 
 
 // middlewares
+
 app.use('/assets', express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -22,6 +23,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }))
+
 
 
 // routes
@@ -36,18 +38,24 @@ app.post('/', (req, res) => {
     else {
         req.session.name = req.body.name
     }
-    connected.push(req.session.name)
-    io.emit('newUser', req.body.name)
+    connected.push({ name: req.session.name, socketId: null })
     res.redirect("/home")
 })
 
 app.get('/home', (req, res) => {
+    io.sockets.on('connect', (client) => {
+        myId = client.client.conn.id;
+        if (connected[connected.length-1].socketId === null){
+            connected[connected.length-1].socketId = client.client.conn.id
+            io.emit("newUser", connected[connected.length-1])
+        }
+        client.on('disconnect', () => {
+            io.emit('userDisconnect', client.client.conn.id)
+        })
+    })
     res.render('pages/home', { connected: connected })
 })
 
-io.on("userDisconnection", (sock) => {
-    console.log(sock)
-})
 
 
 server.listen(3000)
