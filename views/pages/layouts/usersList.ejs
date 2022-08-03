@@ -1,8 +1,10 @@
 <div id="connected">
 <% connected.forEach(person => { %>
     <% if (person.socketId !== null) { %>
-        <p data-id="<%= person.socketId %>"><%= person.name %></p>
+        <p class="user" data-id="<%= person.socketId %>"><%= person.name %></p>
+    <% } else { %>
+        <h5 id="me" data-id="<%= personalId %>">moi</h5>
     <% } %>
 <% }) %>
 </div>
-<script type="text/javascript" src="/assets/script/connectedPersonSocket.js"></script>
+<script type="text/javascript" src="/assets/script/connectedUsersSocket.js"></script>
