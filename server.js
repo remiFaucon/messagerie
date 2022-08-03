@@ -4,6 +4,7 @@ let server = require("http").createServer(app)
 let io = require('socket.io')(server)
 
 let connected = [];
+let personalId = { id: null }
 
 app.set('view engine', 'ejs')
 
@@ -14,6 +15,6 @@ require('./middlewares/socketSession')(app, io)
 
 // routes
 require('./controller/indexController')(app, connected)
-require('./controller/homeController')(app, io, connected)
+require('./controller/homeController')(app, io, connected, personalId)
 
 server.listen(3000)
