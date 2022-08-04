@@ -22,9 +22,15 @@ socket.on('newUser', (user) => {
         eachUser.addEventListener("click", () => {
             let other = eachUser.getAttribute('data-room') ? eachUser.getAttribute('data-room') : eachUser.getAttribute('data-id')
             socket.emit('changeRoom', me, other)
-            document.querySelector('h2').innerText = eachUser.innerHTML
+            let h2 = document.querySelector('h2')
+            h2.innerText = eachUser.innerHTML
         })
     })
+})
+
+socket.on('connectToRoom', (id) => {
+    let h2 = document.querySelector('h2')
+    h2.setAttribute("data-room-id", id)
 })
 
 socket.on('userDisconnect', (id) => {

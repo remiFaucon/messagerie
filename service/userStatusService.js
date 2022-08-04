@@ -8,19 +8,27 @@ let status = {
         }
     },
     room: (io, client, connected) => {
-        io.on('changeRoom', (user1, user2) => {
-
+        client.on('changeRoom', (user1, user2) => {
+            let room
             // TODO modif this
             connected.forEach(user => {
-                let room
                 if (user1 === user.id) {
                     room += user1
                 }
                 if (user2 === user.id) {
-                    room += user1
+                    room += user2
                 }
             })
+            if (user1.charCodeAt(0) < user2.charCodeAt(0)){
+                room = user1 + user2
+            }
+            else{
+                room = user2 + user1
+            }
+
             client.join(room)
+            console.log(room)
+            client.emit('connectToRoom', room)
         })
     },
     deconnection: (io, client, connected) => {
