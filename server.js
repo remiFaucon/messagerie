@@ -1,12 +1,29 @@
-let express = require('express')
-const userStatus = require("./service/userStatusService");
-const chatService = require("./service/chatService");
-let app = express()
-let server = require("http").createServer(app)
-let io = require('socket.io')(server)
+const express = require('express')
+const userStatus = require("./service/userStatusService")
+const chatService = require("./service/chatService")
+const app = express()
+const { ExpressPeerServer } = require('peer');
 
-let connected = []
-let calls = []
+const fs = require('fs')
+const privateKey = fs.readFileSync('openssl/192.168.1.120.key', 'utf8');
+const certificate = fs.readFileSync('openssl/192.168.1.120.crt', 'utf8');
+const creadentials = { key: privateKey, cert: certificate }
+
+const server = require("https").createServer(creadentials, app)
+// const server = require("http").createServer(app)
+const io = require('socket.io')(server)
+
+const connected = []
+const calls = []
+
+const peerServer = ExpressPeerServer(server, {
+    debug: true,
+    path: '/visio'
+});
+
+peerServer.on("connection", () => {
+    console.log("peer ok")
+})
 
 app.set('view engine', 'ejs')
 
@@ -14,10 +31,13 @@ app.set('view engine', 'ejs')
 require('./middlewares/staticRoutes')(app)
 require('./middlewares/bodyParser')(app)
 require('./middlewares/socketSession')(app, io)
+app.use('/peerjs', peerServer);
+
 
 // routes
 require('./controller/indexController')(app, connected)
 require('./controller/homeController')(app, connected)
+
 
 
 io.sockets.on('connect', (client) => {
@@ -30,3 +50,4 @@ io.sockets.on('connect', (client) => {
 })
 
 server.listen(3000)
+

@@ -25,12 +25,3 @@ socket.on('youHaveReceiveMsg', (message) => {
     divChat.appendChild(divReceivedMsg)
     divReceivedMsg.appendChild(receivedMsg)
 })
-
-document.querySelector(".headChat img").addEventListener('click', () => {
-    let room = document.querySelector("h2").getAttribute('data-room-id')
-    socket.emit("newVisio", room)
-    let messengerLayout = document.querySelector('.chat')
-    let visioLayout = document.querySelector('.visio')
-    messengerLayout.classList.add('hidden')
-    visioLayout.classList.remove('hidden')
-})

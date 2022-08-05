@@ -31,10 +31,14 @@ const chat = {
             let videoCapture = new cv.VideoCapture(0)
             client.to(room).emit('emitNewVisio', client.client.conn.id)
 
-            setInterval(() => {
-                let image = cv.imencode(".jpg", videoCapture.read()).toString("base64")
-                io.in(room).compress(false).emit('newImageForVisio', client.client.conn.id, image)
-            }, 1000 / 30)
+            // setInterval(() => {
+            //     let image = cv.imencode(".jpg", videoCapture.read()).toString("base64")
+            //     io.in(room).compress(false).emit('newImageForVisio', client.client.conn.id, image)
+            // }, 1000 / 30)
+            io.on("guetteCa", (video) => {
+                console.log(video)
+                io.in(room).compress(false).emit('newImageForVisio', client.client.conn.id, video)
+            })
         })
     }
 }
