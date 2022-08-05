@@ -1,9 +1,10 @@
-// TODO deco reco
-
 let status = {
     connexion: (io, user, id) => {
-
-        if (user.socketId === null) {
+        if (!user){
+            io.emit("notConnected")
+            // TODO deco reco
+        }
+        else if (user.socketId === null) {
             user.socketId = id
             io.emit("newUser", user)
         }

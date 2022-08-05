@@ -1,7 +1,6 @@
 let submitInput = document.querySelector("input[type='submit']")
 let divChat = document.querySelector('.messages')
 
-
 submitInput.addEventListener('click', () => {
     let message = document.querySelector("input[type='text']").value
     document.querySelector("input[type='text']").value = ""
