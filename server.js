@@ -6,8 +6,7 @@ let server = require("http").createServer(app)
 let io = require('socket.io')(server)
 
 let connected = []
-let personalId
-let rooms = []
+let calls = []
 
 app.set('view engine', 'ejs')
 
@@ -26,7 +25,7 @@ io.sockets.on('connect', (client) => {
     userStatus.connexion(io, connected[connected.length - 1], client.client.conn.id)
     userStatus.room(io, client, connected)
     chatService.newMessage(client)
-    chatService.visio(io, client)
+    chatService.visio(io, calls, client)
     userStatus.deconnection(io, client, connected)
 })
 

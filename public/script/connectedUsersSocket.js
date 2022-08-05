@@ -1,6 +1,9 @@
 const socket = io.connect('localhost:3000')
 let userList = document.getElementById("connected")
 let h1 = document.querySelector('h1')
+let messengerLayout = document.querySelector('.chat')
+let visioLayout = document.querySelector('.visio')
+
 
 socket.on("notConnected", () => {
     window.location.replace("/")
@@ -11,6 +14,8 @@ socket.on('thisIsYourId', (id) => {
     let allUsers = document.querySelectorAll('.user')
     allUsers.forEach(eachUser => {
         eachUser.addEventListener("click", () => {
+            visioLayout.classList.add('hidden')
+            messengerLayout.classList.remove('hidden')
             let other = eachUser.getAttribute('data-room') ? eachUser.getAttribute('data-room') : eachUser.getAttribute('data-id')
             socket.emit('changeRoom', id, other)
             let h2 = document.querySelector('h2')
@@ -32,6 +37,7 @@ socket.on('newUser', (user) => {
 
     allUsers.forEach(eachUser => {
         eachUser.addEventListener("click", () => {
+            messengerLayout.classList.remove('hidden')
             let other = eachUser.getAttribute('data-room') ? eachUser.getAttribute('data-room') : eachUser.getAttribute('data-id')
             socket.emit('changeRoom', me, other)
             let h2 = document.querySelector('h2')

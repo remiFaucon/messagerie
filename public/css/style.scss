@@ -1,7 +1,110 @@
-.headChat {
-  display: flex;
-  img {
-    height: 1.5rem;
-    width: 2rem;
+body {
+  background-color: #323232;
+  margin: 0;
+  header {
+    display: flex;
+    justify-content: end;
+    height: 6rem;
+    color: darkgray;
+  }
+  main {
+    height: calc(100vh - 6rem);
+    display: flex;
+    .connection {
+      margin: auto;
+      padding-bottom: 17rem;
+      form {
+        width: 90vw;
+        max-width: 25rem;
+        height: 15vh;
+        min-height: 11rem;
+        background-color: darkgray;
+        border-radius: .4rem;
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        input[type='text'] {
+          border: 0;
+          border-radius: 1rem;
+          padding: 1rem;
+          width: 80%;
+          margin: 2rem auto 0 auto;
+        }
+        input[type='submit'] {
+          margin: auto;
+          display: block;
+          border: 0;
+          border-radius: 1rem;
+          padding: 1rem;
+        }
+      }
+    }
+    .page {
+      display: flex;
+      .hidden{
+        display: none;
+      }
+      #connected{
+        width: 15rem;
+        .user{
+          padding: 1rem;
+          width: 13rem;
+          border-top: darkgray 1px solid;
+          color: darkgray;
+        }
+      }
+      .chat, .visio{
+        margin-left: 1rem;
+        background-color: darkgray;
+        border-radius: 1rem 0 0 0;
+        width: calc(100vw - 16rem);
+      }
+      .chat{
+        .headChat{
+          display: flex;
+          justify-content: space-between;
+          padding: .5rem 2rem;
+          img {
+            height: 1.5rem;
+            width: 2rem;
+            margin: auto 0;
+          }
+        }
+        .messages{
+          display: flex;
+          flex-direction: column;
+          height: calc(100% - 9.5rem);
+          padding: 0 1rem;
+          .sent, .received{
+            background-color: #323232;
+            padding: 1rem;
+            color: lightgrey;
+            width: fit-content;
+          }
+          .divSent{
+            display: flex;
+            justify-content: end;
+            .sent{
+              border-radius: 1rem 1rem 0 1rem;
+            }
+          }
+        }
+        .footChat{
+          display: flex;
+          justify-content: space-around;
+          input[type='text']{
+            width: 80%;
+            padding: 1rem;
+            border-radius: 1rem;
+            border: 0;
+          }
+          input[type='submit']{
+            border: 0;
+            border-radius: 1rem;
+            padding: 1rem;
+          }
+        }
+      }
+    }
   }
 }
