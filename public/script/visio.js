@@ -1,62 +1,79 @@
-let usersCam = []
+let user = { id: undefined }
+socket.on('thisIsYourId', (myId) => {
+    document.querySelector(".headChat img").addEventListener('click', () => {
+        const peer = new Peer(undefined, {
+            host: "192.168.1.120",
+            port: 3000,
+            path: "/peerjs/visio"
+        })
 
+        let room = document.querySelector("h2").getAttribute('data-room-id')
+        let messengerLayout = document.querySelector('.chat')
+        let visioLayout = document.querySelector('.visio')
+        messengerLayout.classList.add('hidden')
+        visioLayout.classList.remove('hidden')
 
-document.querySelector(".headChat img").addEventListener('click', () => {
-    const peer = new Peer("pas undefined", {
-        host: "192.168.1.120",
-        port: 3000,
-        path: "/peerjs/visio"
-    })
-    let room = document.querySelector("h2").getAttribute('data-room-id')
-    socket.emit("newVisio", room)
+        peer.on("open", (id) => {
+            console.log(id)
+            socket.emit('newVisio', room, id)
+        })
 
-    let messengerLayout = document.querySelector('.chat')
-    let visioLayout = document.querySelector('.visio')
-    messengerLayout.classList.add('hidden')
-    visioLayout.classList.remove('hidden')
-})
+        navigator.mediaDevices.getUserMedia({video: true, audio: true})
+            .then((mediaStream) => {
+                let myCamTag = document.createElement("video")
+                let visio = document.querySelector('.visio')
 
-socket.on("connectedVisio", (usersAlreadyConnect) => {
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        .then((mediaStream) => {
-            let myId = h1.getAttribute("data-my-id")
-            let myCamTag = document.createElement("video")
-            let visio = document.querySelector('.visio')
+                myCamTag.id = "sent"
+                visio.appendChild(myCamTag)
 
-            usersCam.push({ user: { userId: myId, tag: myCamTag } })
-            myCamTag.id = myId
-            visio.appendChild(myCamTag)
+                myCamTag.srcObject = mediaStream
+                myCamTag.addEventListener("loadeddata", () => {
+                    myCamTag.play()
+                })
 
-            let video = new ImageCapture(mediaStream.getVideoTracks()[0])
-            // myCamTag.srcObject = video
-            myCamTag.addEventListener("loadeddata", () => {
-                // myCamTag.play()
+                socket.on('newUserVisio', (userId) => {
+                    const call = peer.call(userId[0], mediaStream)
+
+                    // call.on("stream", (stream) => {
+                    //     console.log("a")
+                    //     let userCam = document.createElement("video")
+                    //     userCam.id = "received"
+                    //     userCam.srcObject = stream
+                    //     userCam.addEventListener("loadedmetadata", () => {
+                    //         userCam.play()
+                    //     })
+                    //     let visioDiv = document.querySelector('.visio')
+                    //     visioDiv.appendChild(userCam)
+                    // })
+                })
+
+                peer.on("call", (call) => {
+                    call.answer(mediaStream)
+
+                    call.on("stream", (stream) => {
+                        console.log(mediaStream)
+                        console.log(stream)
+                        let userCam = document.createElement("video")
+                        userCam.id = "received"
+                        userCam.srcObject = stream
+                        userCam.addEventListener("loadedmetadata", () => {
+                            userCam.play()
+                        })
+                        let visioDiv = document.querySelector('.visio')
+                        visioDiv.appendChild(userCam)
+                    })
+                })
+                // call.on("data", (stream) => {
+                //     console.log("a")
+                //
+                //     // userCam.srcObject = stream
+                // })
+                // call.on("error", (err) => {
+                //     console.log(err)
+                // })
+                // call.on('close', () => {
+                //     // endCall()
+                // })
             })
-
-            peer.call()
-        })
-
-    if (usersAlreadyConnect === null){
-        usersAlreadyConnect.forEach(user => {
-            let camTag = document.createElement('img')
-            camTag.id = user
-            visio.appendChild(camTag)
-        })
-    }
-})
-
-socket.on('emitNewVisio', (userId) => {
-    let userCam = document.createElement("img")
-    userCam.id = userId
-    let visio = document.querySelector('.visio')
-    visio.appendChild(userCam)
-    usersCam.push({ user: { userId: userId, tag: userCam } })
-})
-
-socket.on('newImageForVisio', (clientId, image) => {
-    usersCam.forEach(userCam => {
-        if (userCam.user.userId === clientId){
-            userCam.user.tag.src = 'data:video/mp4;base64,'+image
-        }
     })
 })

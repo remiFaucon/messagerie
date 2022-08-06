@@ -1,4 +1,4 @@
-const cv = require('opencv4nodejs')
+// const cv = require('opencv4nodejs')
 
 const chat = {
     newMessage: (client) => {
@@ -8,7 +8,7 @@ const chat = {
         })
     },
     visio: (io, calls, client) => {
-        client.on('newVisio', (room) => {
+        client.on('newVisio', (room, peerUserId) => {
             let callExist = false
             Object.entries(calls).forEach(call => {
                 if (call[1].room === room){
@@ -22,23 +22,23 @@ const chat = {
             let i = 0
             Object.entries(calls).forEach(call => {
                 if (call[1].room === room){
-                    client.emit("connectedVisio", call[1].users)
-                    calls[i].users.push(client.client.conn.id)
+                    client.to(room).emit("newUserVisio", call[1].users)
+                    calls[i].users.push(peerUserId)
                 }
                 i++
             })
 
-            let videoCapture = new cv.VideoCapture(0)
-            client.to(room).emit('emitNewVisio', client.client.conn.id)
+            // let videoCapture = new cv.VideoCapture(0)
+            // client.to(room).emit('emitNewVisio', peerUserId)
 
             // setInterval(() => {
             //     let image = cv.imencode(".jpg", videoCapture.read()).toString("base64")
             //     io.in(room).compress(false).emit('newImageForVisio', client.client.conn.id, image)
             // }, 1000 / 30)
-            io.on("guetteCa", (video) => {
-                console.log(video)
-                io.in(room).compress(false).emit('newImageForVisio', client.client.conn.id, video)
-            })
+            // io.on("guetteCa", (video) => {
+            //     console.log(video)
+            //     io.in(room).compress(false).emit('newImageForVisio', peerUserId, video)
+            // })
         })
     }
 }
