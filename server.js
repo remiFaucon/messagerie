@@ -5,13 +5,19 @@ const app = express()
 const { ExpressPeerServer } = require('peer');
 
 const fs = require('fs')
-const privateKey = fs.readFileSync('openssl/lechat.uno.key', 'utf8');
-const certificate = fs.readFileSync('openssl/lechat.uno.crt', 'utf8');
+const privateKey = fs.readFileSync('openssl/192.168.1.120.key', 'utf8');
+const certificate = fs.readFileSync('openssl/192.168.1.120.crt', 'utf8');
 const creadentials = { key: privateKey, cert: certificate }
 
 const server = require("https").createServer(creadentials, app)
 // const server = require("http").createServer(app)
-const io = require('socket.io')(server)
+const io = require('socket.io')(server, {
+    cors: {
+        origin: "https://localhost:3000",
+        methods: ["GET", "POST"],
+        credentials: true
+    }
+})
 
 const connected = []
 const calls = []

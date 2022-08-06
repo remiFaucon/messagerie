@@ -1,4 +1,6 @@
-const socket = io.connect('https://192.168.1.120:3000')
+const socket = io.connect('https://localhost:3000', {
+    withCredentials: true,
+})
 let userList = document.getElementById("connected")
 let h1 = document.querySelector('h1')
 let messengerLayout = document.querySelector('.chat')
