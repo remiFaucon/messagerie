@@ -3,9 +3,31 @@ body {
   margin: 0;
   header {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
     height: 6rem;
     color: darkgray;
+    .hidden{
+      visibility: hidden;
+    }
+    .notifications{
+      display: flex;
+      .notification {
+        display: flex;
+        background-color: darkgray;
+        border-radius: 1rem;
+        margin: auto .2rem;
+        padding: 1rem;
+        p{
+          margin: auto;
+          color: #323232;
+        }
+        img{
+          width: 2rem;
+          height: 2rem;
+          margin: 0 .3rem;
+        }
+      }
+    }
   }
   main {
     height: calc(100vh - 6rem);

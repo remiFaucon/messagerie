@@ -33,7 +33,7 @@ const chat = {
 
             // setInterval(() => {
             //     let image = cv.imencode(".jpg", videoCapture.read()).toString("base64")
-            //     io.in(room).compress(false).emit('newImageForVisio', client.client.conn.id, image)
+            //     io.in(room).compress(false).emit('newImageForVisio', client.id, image)
             // }, 1000 / 30)
             // io.on("guetteCa", (video) => {
             //     console.log(video)
