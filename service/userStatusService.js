@@ -18,9 +18,9 @@ let status = {
     },
     deconnection: (io, client, connected) => {
         client.on('disconnect', () => {
-            io.emit('userDisconnect', client.client.conn.id)
+            io.emit('userDisconnect', client.id)
             for (let i = 0; i < connected.length; i++) {
-                if (connected[i].socketId === client.client.conn.id) {
+                if (connected[i].socketId === client.id) {
                     connected.splice(i, 1)
                 }
             }

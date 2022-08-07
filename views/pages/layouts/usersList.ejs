@@ -1,6 +1,6 @@
 <div id="connected">
 <% connected.forEach(person => { %>
     <% if (person.socketId !== null) { %>
-        <p class="user" data-id="<%= person.socketId %>"><%= person.name %></p>
+        <p class="user" id="<%= person.socketId %>"><%= person.name %></p>
 <% }}) %>
 </div>

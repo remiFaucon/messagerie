@@ -47,11 +47,12 @@ require('./controller/homeController')(app, connected)
 
 
 io.sockets.on('connect', (client) => {
-    client.emit("thisIsYourId", client.client.conn.id)
-    userStatus.connexion(io, connected[connected.length - 1], client.client.conn.id)
+    client.emit("thisIsYourId", client.id)
+    userStatus.connexion(io, connected[connected.length - 1], client.id)
     userStatus.room(io, client, connected)
     chatService.newMessage(client)
     chatService.visio(io, calls, client)
+    require('./service/notificationService').notifications(io, client)
     userStatus.deconnection(io, client, connected)
 })
 
