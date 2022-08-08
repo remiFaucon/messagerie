@@ -18,6 +18,7 @@ socket.on('thisIsYourId', (myId) => {
         },
         debug: 2
     })
+    document.querySelector(".headChat img").addEventListener('click', () => {
 
     document.querySelector(".headChat img").addEventListener("click",() => {
         document.dispatchEvent(new Event("visio"))
