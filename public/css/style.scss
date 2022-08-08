@@ -6,11 +6,11 @@ body {
     justify-content: space-between;
     height: 6rem;
     color: darkgray;
-    .hidden{
-      visibility: hidden;
-    }
     .notifications{
       display: flex;
+      .notificationLayout{
+        display: none;
+      }
       .notification {
         display: flex;
         background-color: darkgray;
@@ -97,17 +97,28 @@ body {
           flex-direction: column;
           height: calc(100% - 9.5rem);
           padding: 0 1rem;
-          .sent, .received{
+          .sent, .received, .server{
             background-color: #323232;
             padding: 1rem;
             color: lightgrey;
             width: fit-content;
           }
-          .divSent{
+          .divsent{
             display: flex;
             justify-content: end;
             .sent{
               border-radius: 1rem 1rem 0 1rem;
+            }
+          }
+          .divreceived{
+            .received{
+              border-radius: 0 1rem 1rem 1rem;
+            }
+          }
+          .divserver{
+            margin: 0 auto;
+            .server{
+              border-radius: 1rem;
             }
           }
         }

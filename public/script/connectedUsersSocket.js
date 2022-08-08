@@ -21,7 +21,7 @@ socket.on('thisIsYourId', (id) => {
             let other = eachUser.getAttribute('data-room') ? eachUser.getAttribute('data-room') : eachUser.getAttribute('id')
             socket.emit('changeRoom', id, other)
             let h2 = document.querySelector('h2')
-            h2.innerText = eachUser.innerHTML
+            h2.innerText = eachUser.innerText
         })
     })
 })
@@ -43,7 +43,7 @@ socket.on('newUser', (user) => {
             let other = eachUser.getAttribute('data-room') ? eachUser.getAttribute('data-room') : eachUser.getAttribute('id')
             socket.emit('changeRoom', me, other)
             let h2 = document.querySelector('h2')
-            h2.innerText = eachUser.innerHTML
+            h2.innerText = eachUser.innerText
         })
     })
 })

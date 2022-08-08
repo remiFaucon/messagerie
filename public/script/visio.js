@@ -18,7 +18,12 @@ socket.on('thisIsYourId', (myId) => {
         },
         debug: 2
     })
-    document.querySelector(".headChat img").addEventListener('click', () => {
+
+    document.querySelector(".headChat img").addEventListener("click",() => {
+        document.dispatchEvent(new Event("visio"))
+    })
+
+    document.addEventListener('visio', () => {
 
 
         let room = document.querySelector("h2").getAttribute('data-room-id')
@@ -33,7 +38,8 @@ socket.on('thisIsYourId', (myId) => {
 
         navigator.mediaDevices.getUserMedia({video: true, audio: true})
             .then((mediaStream) => {
-                socket.emit("call", getUserId(room, myId))
+                console.log(room)
+                socket.emit("call", room)
                 newUserVisio(mediaStream, "sent")
                 socket.on('newUserVisio', (userId) => {
 
