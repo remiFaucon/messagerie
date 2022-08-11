@@ -38,7 +38,6 @@ socket.on('thisIsYourId', (myId) => {
 
         navigator.mediaDevices.getUserMedia({video: true, audio: true})
             .then((mediaStream) => {
-                console.log(room)
                 socket.emit("call", room)
                 newUserVisio(mediaStream, "sent")
                 socket.on('newUserVisio', (userId) => {
@@ -65,7 +64,7 @@ socket.on('thisIsYourId', (myId) => {
                         // })
                         call.on('close', () => {
                             // endCall()
-                            console.log("ca a couper")
+                            // console.log("ca a couper")
                         })
                     })
 

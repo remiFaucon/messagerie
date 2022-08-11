@@ -14,7 +14,7 @@ socket.on('thisIsYourId', (myId) => {
             notif.addEventListener("click", (pointer) => {
                 if (pointer.path[0] !== notif.querySelector('.cancel')) {
                     let other = notif.id
-                    console.log(notif.classList)
+                    // console.log(notif.classList)
                     if (notif.classList[1] === "call") {
                         document.dispatchEvent(new Event("visio"))
                     } else {

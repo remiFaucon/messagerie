@@ -1,7 +1,7 @@
-module.exports = (app, connected) => {
+module.exports = (app, user) => {
     app.get('/', (req, res) => {
         res.render('pages/index')
-        })
+    })
 
     app.post('/', (req, res) => {
         if (req.body.name === undefined || req.body.name.trim() === ""){
@@ -10,7 +10,7 @@ module.exports = (app, connected) => {
         else {
             req.session.name = req.body.name
         }
-        connected.push({ name: req.session.name, socketId: null })
+        user.setName(req.session.name)
         res.redirect("/home")
     })
 }

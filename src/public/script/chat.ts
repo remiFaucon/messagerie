@@ -10,18 +10,18 @@ submitInput.addEventListener('click', () => {
     newMsg(message, 'sent')
 })
 
-socket.on('youHaveReceiveMsg', (message) => {
+socket.on('youHaveReceiveMsg', (message: string) => {
     newMsg(message, 'received')
 })
 
-socket.on('MsgNotification', (type, userId) => {
+socket.on('MsgNotification', (type: string, userId: string) => {
     switch (type) {
         case 'call':
             newMsg(document.getElementById(userId).innerText + " a demarrer une visio, rejoins-le", "server")
     }
 })
 
-function newMsg(message, classMsg) {
+function newMsg(message: string, classMsg: string) {
     let divReceivedMsg = document.createElement('p')
     divReceivedMsg.classList.add('div' + classMsg)
     let receivedMsg = document.createElement('p')

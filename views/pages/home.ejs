@@ -1,6 +1,11 @@
-<script src="https://192.168.1.120:3000/socket.io/socket.io.js"></script>
+<!--<script src="/socket.io/socket.io.js"></script>-->
+<!--<script src="/assets/script/engine.io.js"></script>-->
+<!--<script src="/node_modules/socket.io-client/"></script>-->
 <script src="https://unpkg.com/peerjs@1.4.5/dist/peerjs.min.js"></script>
-
+<!--<script type="text/javascript" src="https://requirejs.org/docs/release/2.3.2/minified/require.js"></script>-->
+<script type="module">
+    import { io } from "https://cdn.socket.io/4.5.1/socket.io.esm.min.js";
+</script>
 <%- include('layouts/header') %>
 <div class="page">
     <%- include('layouts/usersList') %>
@@ -8,6 +13,9 @@
     <%- include('layouts/visio')%>
 </div>
 <%- include('layouts/footer') %>
+<script>
+    let exports = {"__esModule": true};
+</script>
 <script src="/assets/script/connectedUsersSocket.js"></script>
 <script src="assets/script/chat.js"></script>
 <script src="assets/script/visio.js"></script>

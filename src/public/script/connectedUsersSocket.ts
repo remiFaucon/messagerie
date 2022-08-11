@@ -1,17 +1,15 @@
-const socket = io.connect('https://localhost:3000', {
-    withCredentials: true,
-})
+let socket = io.connect("https://localhost:3000",  { withCredentials: true })
+
 let userList = document.getElementById("connected")
 let h1 = document.querySelector('h1')
 let messengerLayout = document.querySelector('.chat')
 let visioLayout = document.querySelector('.visio')
 
-
 socket.on("notConnected", () => {
     window.location.replace("/")
 })
 
-socket.on('thisIsYourId', (id) => {
+socket.on('thisIsYourId', (id: string) => {
     h1.setAttribute("data-my-id", id)
     let allUsers = document.querySelectorAll('.user')
     allUsers.forEach(eachUser => {
@@ -26,14 +24,19 @@ socket.on('thisIsYourId', (id) => {
     })
 })
 
-socket.on('newUser', (user) => {
+socket.on('newUser', (user: { socketId: string; name: string }) => {
+
+    console.log("useer client " + user.socketId + " " + user.name)
+
     let me = h1.getAttribute("data-my-id")
-    if (user.socketId !== me) {
+    let other = []
+    if (user.socketId !== me && !other.includes(user.socketId)) {
         let pUser = document.createElement("p")
         pUser.innerText = user.name
         pUser.classList.add('user')
         pUser.setAttribute("id", user.socketId)
         userList.appendChild(pUser)
+        other.push(user.socketId)
     }
     let allUsers = document.querySelectorAll('.user')
 
@@ -48,14 +51,22 @@ socket.on('newUser', (user) => {
     })
 })
 
-socket.on('connectToRoom', (id) => {
+socket.on('connectToRoom', (id: string) => {
     let h2 = document.querySelector('h2')
     h2.setAttribute("data-room-id", id)
+    socket.emit("getMessages", id)
 })
 
-socket.on('userDisconnect', (id) => {
-    let removeUser = document.querySelector("p[id="+id+"]")
+socket.on('userDisconnect', (id: string) => {
+    let removeUser = document.querySelector("p[id=\""+id+"\"]")
     if (removeUser !== undefined){
         removeUser.remove()
     }
 })
+
+socket.on("connect_error", () => {
+    setTimeout(() => {
+        console.log("co after deco")
+        socket.connect("https://localhost:3000",  { withCredentials: true });
+    }, 1000);
+});
