@@ -48,7 +48,7 @@ app.use('/peerjs', peerServer);
 let status = new userStatus()
 // routes
 require('./controller/indexController')(app, user)
-require('./controller/homeController')(app)
+require('./controller/homeController')(app, Connected)
 
 
 
@@ -61,9 +61,9 @@ io.sockets.on('connect', (client) => {
     user.unset()
 
     const chat = new chatService();
-    status.room(client)
+    status.room(io, client)
     chat.newMessage(client)
-    chat.getMessages(io, client)
+    // chat.getMessages(io, client)
     chat.visio(io, client)
     require('./service/notificationService').notifications(io, client)
     status.disconnect(io, client)

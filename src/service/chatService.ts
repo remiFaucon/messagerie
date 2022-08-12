@@ -1,4 +1,4 @@
-const {createMessage, MessageClass, getAllMessages} = require("../models/messages")
+const {MessageClass, findMessageFromRoomId} = require("../models/messages")
 import {sysctrl} from "./systemService"
 
 export class chatService {
@@ -7,20 +7,12 @@ export class chatService {
 
     newMessage (client) {
         client.on('newMessage', (message, room) => {
-            let msg = new MessageClass()
-            msg.message = message
-            msg.room = room
-            msg.sendBy = client.id
-            createMessage().catch(error => console.log(error))
-            client.to(room).emit('youHaveReceiveMsg', message)
-        })
-    }
-
-    getMessages (io, client) {
-        client.on('getMessages', (userId) => {
-            let roomId = sysctrl.getRoomId(client.id, userId)
-            let messages = getAllMessages(roomId)
-            io.to(client.id).emit('allMessages', messages)
+            if (message !== undefined && message !== "") {
+                console.log(room)
+                let msg = new MessageClass(message, room, client.id)
+                msg.createMessage().catch(error => console.log(error))
+                client.to(room).emit('youHaveReceiveMsg', message)
+            }
         })
     }
 
@@ -36,10 +28,9 @@ export class chatService {
             if (!callExist){
                 this.calls.push({ room: room, users: []})
             }
-
             for (let i=0; i < this.calls.length, i++;) {
-                if (call[i].room === room) {
-                    client.to(room).emit("newUserVisio", call[i].users)
+                if (this.calls[i].room === room) {
+                    client.to(room).emit("newUserVisio", this.calls[i].users)
                     this.calls[i].users.push(peerUserId)
                 }
             }

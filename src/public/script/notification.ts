@@ -6,6 +6,7 @@ socket.on('thisIsYourId', (myId) => {
     })
 
     socket.on("messageNotification", (userId) => {
+        console.log(userId)
         newNotif(userId, "message")
     })
 
@@ -17,7 +18,8 @@ socket.on('thisIsYourId', (myId) => {
                     // console.log(notif.classList)
                     if (notif.classList[1] === "call") {
                         document.dispatchEvent(new Event("visio"))
-                    } else {
+                    }
+                    else {
                         visioLayout.classList.add('hidden')
                         messengerLayout.classList.remove('hidden')
                         socket.emit('changeRoom', myId, notif.id)

@@ -25,9 +25,6 @@ socket.on('thisIsYourId', (id: string) => {
 })
 
 socket.on('newUser', (user: { socketId: string; name: string }) => {
-
-    console.log("useer client " + user.socketId + " " + user.name)
-
     let me = h1.getAttribute("data-my-id")
     let other = []
     if (user.socketId !== me && !other.includes(user.socketId)) {
@@ -43,19 +40,16 @@ socket.on('newUser', (user: { socketId: string; name: string }) => {
     allUsers.forEach(eachUser => {
         eachUser.addEventListener("click", () => {
             messengerLayout.classList.remove('hidden')
-            let other = eachUser.getAttribute('data-room') ? eachUser.getAttribute('data-room') : eachUser.getAttribute('id')
-            socket.emit('changeRoom', me, other)
+            let otherId = eachUser.getAttribute('data-room') ? eachUser.getAttribute('data-room') : eachUser.id
+            console.log(otherId)
+            socket.emit('changeRoom', me, otherId)
             let h2 = document.querySelector('h2')
             h2.innerText = eachUser.innerText
+            h2.setAttribute("data-room-id", otherId)
         })
     })
 })
 
-socket.on('connectToRoom', (id: string) => {
-    let h2 = document.querySelector('h2')
-    h2.setAttribute("data-room-id", id)
-    socket.emit("getMessages", id)
-})
 
 socket.on('userDisconnect', (id: string) => {
     let removeUser = document.querySelector("p[id=\""+id+"\"]")
@@ -66,7 +60,6 @@ socket.on('userDisconnect', (id: string) => {
 
 socket.on("connect_error", () => {
     setTimeout(() => {
-        console.log("co after deco")
         socket.connect("https://localhost:3000",  { withCredentials: true });
     }, 1000);
 });

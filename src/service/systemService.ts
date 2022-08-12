@@ -1,5 +1,5 @@
 export const sysctrl = {
-    getOtherIdFromRoomId: (roomId, myId) => {
+    getOtherIdFromRoomId: (roomId: string, myId: string) => {
         let a = roomId.split("")
         let c = ''
         let d = ''
@@ -15,7 +15,7 @@ export const sysctrl = {
         })
         return c === myId ? d : c
     },
-    getRoomId: (user1, user2) => {
+    getRoomId: (user1: string, user2: string) => {
         return user1.charCodeAt(0) < user2.charCodeAt(0) ? user1 + user2 : user2 + user1
     }
 }
