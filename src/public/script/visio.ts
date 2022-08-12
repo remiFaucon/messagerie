@@ -1,6 +1,6 @@
 let user = { id: undefined }
 
-socket.on('thisIsYourId', (myId) => {
+socket.on('connect', (myId) => {
     const peer = new Peer(Math.round(Math.random()*1000000000), {
         host: "192.168.1.120",
         port: 3000,

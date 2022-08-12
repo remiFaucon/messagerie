@@ -13,13 +13,13 @@ function call(io, client) {
 }
 
 function message(io, client) {
-    client.on("newMessage", (message, roomId) => {
-        let userId = sysctrl.getOtherIdFromRoomId(roomId, client.id)
-
-        if (findKey(io.sockets.adapter.rooms, client.id)) {
-            io.to(userId).emit('messageNotification', client.id)
-        }
-    })
+    // client.on("newMessage", (message, roomId) => {
+    //     let userId = sysctrl.getOtherIdFromRoomId(roomId, client.id)
+    //
+    //     if (findKey(io.sockets.adapter.rooms, client.id)) {
+    //         io.to(userId).emit('messageNotification', client.id)
+    //     }
+    // })
 }
 
 

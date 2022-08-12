@@ -1,4 +1,4 @@
-let submitInput = document.querySelector("input[type='submit']")
+let submitInput = document.querySelector(".submit")
 let divChat = document.querySelector('.messages')
 
 submitInput.addEventListener('click', () => {
@@ -34,8 +34,6 @@ socket.on('connectToRoom', (roomId: string, messages: object) => {
         }
     })
 })
-
-
 
 
 function newMsg(message: string, classMsg: string) {

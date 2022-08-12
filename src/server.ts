@@ -24,7 +24,7 @@ const io = new SocketServer(server, {
     cors: {
         origin: "https://localhost:3000",
         methods: ["GET", "POST"],
-        credentials: true
+        allowedHeaders: ["customHeader"],
     }
 })
 
@@ -35,16 +35,16 @@ let env = dotenv.config().parsed
 const peerServer = ExpressPeerServer(server, { path: '/visio' });
 peerServer.on("connection", () => {})
 
-const user = new User()
-
 app.set('view engine', 'ejs')
 
 // middlewares
+
 require('./middlewares/staticRoutes.js')(app, express)
 require('./middlewares/bodyParser.js')(app)
 require('./middlewares/socketSession.js')(app, io)
 app.use('/peerjs', peerServer);
 
+const user = new User()
 let status = new userStatus()
 // routes
 require('./controller/indexController')(app, user)
@@ -56,8 +56,8 @@ io.sockets.on('connect', (client) => {
     user.setSocketId(client.id)
     Connected.setUser(user)
     let newUser = Connected.getAllInfo()[Connected.getAllInfo().length - 1]
+    io.emit("newUser", newUser)
     client.emit("thisIsYourId", client.id)
-    io.emit("newUser" ,newUser)
     user.unset()
 
     const chat = new chatService();

@@ -7,6 +7,7 @@ export class chatService {
 
     newMessage (client) {
         client.on('newMessage', (message, room) => {
+            console.log(message)
             if (message !== undefined && message !== "") {
                 console.log(room)
                 let msg = new MessageClass(message, room, client.id)
