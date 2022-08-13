@@ -13,18 +13,17 @@ import {Connected} from "./class/Connected";
 
 // Error.stackTraceLimit = Infinity;
 
-const credentials = { key: undefined, cert: undefined }
-credentials.key = fs.readFileSync('./src/openssl/192.168.1.120.key', {encoding:'utf8', flag:'r'})
-credentials.cert = fs.readFileSync('./src/openssl/192.168.1.120.crt', {encoding:'utf8', flag:'r'})
-// const certificate = fs.readFile('./openssl/192.168.1.120.crt', {encoding:'utf8', flag:'r'});
+const credentials = {
+    key: fs.readFileSync('./src/ssl/key.pem', {encoding:'utf8', flag:'r'}),
+    cert: fs.readFileSync('./src/ssl/cert.pem', {encoding:'utf8', flag:'r'})
+}
 
 const app = express()
 let server = createServer(credentials, app)
 const io = new SocketServer(server, {
     cors: {
         origin: "https://localhost:3000",
-        methods: ["GET", "POST"],
-        allowedHeaders: ["customHeader"],
+        methods: ["GET", "POST"]
     }
 })
 
@@ -42,13 +41,14 @@ app.set('view engine', 'ejs')
 require('./middlewares/staticRoutes.js')(app, express)
 require('./middlewares/bodyParser.js')(app)
 require('./middlewares/socketSession.js')(app, io)
-app.use('/peerjs', peerServer);
+// app.use('/peerjs', peerServer);
 
 const user = new User()
 let status = new userStatus()
 // routes
 require('./controller/indexController')(app, user)
 require('./controller/homeController')(app, Connected)
+require('./controller/sslController')(app, Connected)
 
 
 
@@ -70,6 +70,10 @@ io.sockets.on('connect', (client) => {
 
     client.on("error", (err) => {
         console.log(err)
+    })
+
+    client.on("error", (err) => {
+        socket.disconnect();
     })
 })
 

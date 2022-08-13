@@ -45,3 +45,4 @@ function newMsg(message: string, classMsg: string) {
     divChat.appendChild(divReceivedMsg)
     divReceivedMsg.appendChild(receivedMsg)
 }
+

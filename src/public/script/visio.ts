@@ -5,7 +5,7 @@ socket.on('connect', (myId) => {
         host: "192.168.1.120",
         port: 3000,
         path: "/peerjs/visio",
-        secure: true,
+        // secure: true,
         config: {
             'iceServers': [
                 { url: 'stun:35.177.230.92:3478' },
