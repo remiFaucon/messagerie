@@ -12,12 +12,6 @@ export class Connected {
     }
 
     static getAllInfo() {
-        // for (let i = 0; i < this.allUsers.length; i++) {
-        //     if (this.allUsers[i].name === undefined || this.allUsers[i].socketId === undefined) {
-        //         this.allUsers.splice(i, 1)
-        //     }
-        // }
-        // console.log(this.allUsers)
         return this.allUsers
     }
 
